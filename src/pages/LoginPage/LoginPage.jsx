@@ -13,14 +13,17 @@ import {
   Link,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { goToHomePage, goToSignupPage } from "../../routes/coordinator";
 import { BASE_URL } from "../../constants/url";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 const LoginPage = () => {
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
+
+  const context = useContext(GlobalContext);
 
   const navigate = useNavigate();
 
@@ -29,6 +32,12 @@ const LoginPage = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
+  });
+
+  useEffect(() => {
+    if (context.isAuth) {
+      goToHomePage(navigate);
+    }
   });
 
   // const onChangeEmail = (event) => {
@@ -57,6 +66,7 @@ const LoginPage = () => {
       window.localStorage.setItem("cookenu-token", response.data.token);
 
       setIsLoading(false);
+      context.setIsAuth(true);
 
       goToHomePage(navigate);
     } catch (error) {
