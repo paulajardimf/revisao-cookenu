@@ -38,7 +38,7 @@ const LoginPage = () => {
     if (context.isAuth) {
       goToHomePage(navigate);
     }
-  });
+  }, [context.isAuth, navigate]);
 
   // const onChangeEmail = (event) => {
   //   setEmail(event.target.value)
